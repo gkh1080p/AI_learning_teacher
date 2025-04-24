@@ -1,6 +1,3 @@
-在线教育平台-讲师端
-
-项目地址：[Gitee](https://gitee.com/snwjas/online-edu) | [GitHub](https://github.com/snwjas/OnlineEdu)
 
 
 
