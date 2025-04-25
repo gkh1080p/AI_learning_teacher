@@ -5,7 +5,11 @@ const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  sidebarLogo: sidebarLogo,
+  options: {
+    name: 'Wisdo teacher',
+    logo: require('@/assets/logo.png') // 路径按实际情况修改
+  }
 }
 
 const mutations = {

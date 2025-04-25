@@ -3,7 +3,7 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+        <h1 v-else class="sidebar-title">{{ title }} 11111</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
@@ -22,10 +22,12 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      title: this.$store.getters.options.name || 'MyBlog Admin',
-      logo: this.$store.getters.options.logo || ''
+  computed: {
+    title() {
+      return this.$store.getters.options?.name || '欢迎使用'
+    },
+    logo() {
+      return this.$store.getters.options?.logo || ''
     }
   }
 }
