@@ -60,6 +60,13 @@ export function deleteIt(id) {
     method: 'post'
   })
 }
+//上架
+export function enable(id) {
+  return request({
+    url: `${api_prefix}/enable/${id}`,
+    method: 'post'
+  })
+}
 
 // 上传图片
 export function uploadPic(data) {
