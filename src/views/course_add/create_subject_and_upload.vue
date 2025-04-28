@@ -16,6 +16,8 @@
           <div class="ctrl">
             <el-button size="mini" type="primary" icon="el-icon-upload" @click.stop="openUploadVideoDialog(c)">视频
             </el-button>
+            <el-button size="mini" type="primary" icon="el-icon-upload" @click.stop="openUploadVideoDialog(c)">讲义
+            </el-button>
             <el-button size="mini" type="success" @click.stop="openUpdateChapterDialog(c)">修改</el-button>
             <el-button size="mini" type="danger" @click.stop="openDeleteChapterDialog(c)">删除</el-button>
           </div>
