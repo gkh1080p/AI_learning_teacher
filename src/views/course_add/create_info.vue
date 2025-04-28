@@ -23,9 +23,9 @@
         <el-input v-model="data.title" placeholder="请输入课程名称" />
       </el-form-item>
       <el-form :model="data" :inline="true" size="small" label-width="100px">
-        <el-form-item label="价　　格：" prop="price">
+        <!-- <el-form-item label="价　　格：" prop="price">
           <el-input-number v-model="data.price" :precision="2" :min="0" style="width: 200px" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="课程分类：" prop="subjectId">
           <el-cascader
             v-model="data.subjectId"

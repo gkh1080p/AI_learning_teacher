@@ -22,7 +22,7 @@
             <el-button size="mini" type="danger" @click.stop="openDeleteChapterDialog(c)">删除</el-button>
           </div>
         </template>
-        <!-- 视频列表 -->、
+        <!-- 视频列表 -->
         <div class="table-section">
           <div class="table-title">
             <i class="el-icon-video-camera"></i>
