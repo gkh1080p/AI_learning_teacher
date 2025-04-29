@@ -79,10 +79,10 @@
             <el-button v-if="scope.row.status.indexOf('AUDITING') !== -1" type="primary" size="mini" icon="el-icon-edit"
               :disabled="scope.row.status.indexOf('AUDITING') !== -1" >修改</el-button>
               <!-- 判断是否上架 -->
-            <el-popconfirm v-if="scope.row.enable" style="margin:0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
+            <el-popconfirm v-if="scope.row.enable" style="margin:0 0 0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
             icon="el-icon-bottom" icon-color="red" :title="`你要下架课程[${scope.row.title}]吗？`"
               @confirm="deleteUser(scope.row)">
-              <el-button slot="reference" type="warning" size="mini" icon="el-icon-bottom" >下架</el-button>
+              <el-button slot="reference" type="danger" size="mini" icon="el-icon-bottom" >下架</el-button>
             </el-popconfirm>
             <el-popconfirm v-if="!scope.row.enable" style="margin:0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
             icon="el-icon-top" icon-color="red" :title="`你要上架课程[${scope.row.title}]吗？`"
@@ -96,7 +96,15 @@
                 删除
               </el-button>
             </el-popconfirm> -->
-            <el-popover v-if="scope.row.status === 'TURN_DOWN'" title="审核驳回原因" placement="left" width="360"
+            <!-- 课程评阅 -->
+            <el-popconfirm v-if="!(scope.row.status === 'TURN_DOWN')" style="margin:0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
+            icon="el-icon-top" icon-color="red" :title="`你要上架课程[${scope.row.title}]吗？`"
+              @confirm="enableUser(scope.row)">
+              <el-button slot="reference" type="warning" size="mini" icon="el-icon-chat-dot-round" >评阅</el-button>
+            </el-popconfirm>
+
+
+            <el-popover v-if="scope.row.status === 'TURN_DOWN'" style="margin: 0 0 0 10px;" title="审核驳回原因" placement="left" width="360"
               trigger="click">
               <span style="color: #F44336;line-height: 24px">{{ scope.row.remarks }}</span>
               <el-button slot="reference" type="info" size="mini" icon="el-icon-warning-outline">备注</el-button>
@@ -131,7 +139,7 @@ export default {
         subjectId: null,
         title: '',
         free: null,
-        status: null, // 显示通过审核的
+        status: 'PUBLISH', // 显示通过审核的
         enable: null
       },
       total: 0,

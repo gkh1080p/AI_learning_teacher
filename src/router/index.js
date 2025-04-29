@@ -108,17 +108,17 @@ export const constantRoutes = [
       meta: { title: '更新课程信息', icon: 'publish' }
     }]
   },
-  // 评论管理
-  {
-    path: '/comment',
-    component: Layout,
-    children: [{
-      path: 'list',
-      name: 'CommentList',
-      component: () => import('@/views/comment/comment_list'),
-      meta: { title: '评论管理', icon: 'comment' }
-    }]
-  },
+  // // 评论管理
+  // {
+  //   path: '/review',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'list',
+  //     name: 'reviewList',
+  //     component: () => import('@/views/course_review/courseReview.vue'),
+  //     meta: { title: '课程评阅', icon: 'el-icon-chat-dot-round' }
+  //   }]
+  // },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
