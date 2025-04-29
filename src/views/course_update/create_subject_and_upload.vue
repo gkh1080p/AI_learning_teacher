@@ -65,9 +65,9 @@
             :header-cell-style="{ fontWeight: 'normal', color: '#666' }" style="font-size: 13px">
             <el-table-column type="index" />
             <el-table-column prop="title" label="名称" show-tooltip-when-overflow />
-            <el-table-column prop="size" label="大小" width="120">
+            <!-- <el-table-column prop="size" label="大小" width="120">
               <template slot-scope="scope">{{ bytesToSize(scope.row.size) }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" width="150" align="center">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="openUpdateDocumentDialogVisible(scope.row)">修改</el-button>
@@ -186,62 +186,62 @@ import {
   deleteIt as deleteVideo
 } from '@/api/video_tmp'
 //讲义相关接口
-// import {
-//   list as listDocument,
-//   updateIt as updateDocument,
-//   deleteIt as deleteDocument
-// } from '@/api/document_tmp'
+import {
+  list as listDocument,
+  updateIt as updateDocument,
+  deleteIt as deleteDocument
+} from '@/api/document_tmp'
 
 // 改为空实现或mock数据
 // 修改mock函数，移除对this的依赖
-const listDocument = (chapterId) => {
-  // 使用固定mock数据（不再依赖this.chapters）
-  const mockTemplates = [
-    {
-      title: '软件工程课程讲义.pdf',
-      size: 1024 * 2450,
-      type: 'pdf'
-    },
-    {
-      title: '教学PPT.pptx',
-      size: 1024 * 5870,
-      type: 'pptx'
-    }
-  ]
+// const listDocument = (chapterId) => {
+//   // 使用固定mock数据（不再依赖this.chapters）
+//   const mockTemplates = [
+//     {
+//       title: '软件工程课程讲义.pdf',
+//       size: 1024 * 2450,
+//       type: 'pdf'
+//     },
+//     {
+//       title: '教学PPT.pptx',
+//       size: 1024 * 5870,
+//       type: 'pptx'
+//     }
+//   ]
 
-  const documents = mockTemplates.map((item, index) => ({
-    id: `doc_${chapterId}_${index}`,
-    title: item.title,
-    size: item.size,
-    chapterId: chapterId,
-    sort: index + 1,
-    url: `/documents/${chapterId}_${index}.${item.type}`
-  }))
+//   const documents = mockTemplates.map((item, index) => ({
+//     id: `doc_${chapterId}_${index}`,
+//     title: item.title,
+//     size: item.size,
+//     chapterId: chapterId,
+//     sort: index + 1,
+//     url: `/documents/${chapterId}_${index}.${item.type}`
+//   }))
 
-  return Promise.resolve({
-    data: documents,
-    message: 'success'
-  })
-}
+//   return Promise.resolve({
+//     data: documents,
+//     message: 'success'
+//   })
+// }
 
-const updateDocument = (data) => {
-  console.log('模拟更新讲义:', data)
-  return Promise.resolve({
-    message: '讲义更新成功',
-    data: {
-      ...data,
-      updatedAt: new Date().toISOString()
-    }
-  })
-}
+// const updateDocument = (data) => {
+//   console.log('模拟更新讲义:', data)
+//   return Promise.resolve({
+//     message: '讲义更新成功',
+//     data: {
+//       ...data,
+//       updatedAt: new Date().toISOString()
+//     }
+//   })
+// }
 
-const deleteDocument = (id) => {
-  console.log('模拟删除讲义:', id)
-  return Promise.resolve({
-    message: `讲义[ID:${id}]删除成功`,
-    code: 200
-  })
-}
+// const deleteDocument = (id) => {
+//   console.log('模拟删除讲义:', id)
+//   return Promise.resolve({
+//     message: `讲义[ID:${id}]删除成功`,
+//     code: 200
+//   })
+// }
 import { bytesToSize } from '@/utils'
 
 export default {
@@ -301,7 +301,8 @@ export default {
         })
         // 默认加载第一个章节的数据
         if (this.chapters.length > 0) {
-          this.change(this.chapters[0].id)
+          console.log('默认加载第一个章节的数据:', this.chapters[0])
+          this.change(this.chapters[0].courseId )
         }
       }).catch(error => {
         console.error('获取章节失败:', error)

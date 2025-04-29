@@ -184,7 +184,7 @@ import {
   list as listVideo,
   updateIt as updateVideo,
   deleteIt as deleteVideo
-} from '@/api/video_tmp'
+} from '@/api/video'
 //讲义相关接口
 // import {
 //   list as listDocument,

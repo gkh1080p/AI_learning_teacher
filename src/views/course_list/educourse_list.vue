@@ -3,7 +3,7 @@
     <div class="search-box">
       <el-form ref="searchParamsForm" :inline="true" :model="searchParams" size="small">
         <el-form-item label="课程名称：" prop="title">
-          <el-input v-model="searchParams" placeholder="输入课程名称搜索" />
+          <el-input v-model="searchParams.title" placeholder="输入课程名称搜索" />
         </el-form-item>
         <el-form-item label="课程分类：" prop="subjectId">
           <el-cascader v-model="searchParams.subjectId" :options="subjectOptions"
