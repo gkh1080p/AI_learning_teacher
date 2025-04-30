@@ -5,7 +5,7 @@
       <el-button type="primary" size="small" @click="openAddChapterDialog">新建章节</el-button>
       <div style="float: right;height: 32px;line-height: 32px">
         <i class="el-icon-loading" />
-        正在更新课程《{{ course.title }}》
+        正在创建课程《{{ course.title }}》
       </div>
     </div>
     <el-collapse :accordion="true" @change="change">
@@ -22,7 +22,6 @@
             <el-button size="mini" type="danger" @click.stop="openDeleteChapterDialog(c)">删除</el-button>
           </div>
         </template>
-        <!-- 视频列表 -->
         <div class="table-section">
           <div class="table-title">
             <i class="el-icon-video-camera"></i>
@@ -65,9 +64,9 @@
             :header-cell-style="{ fontWeight: 'normal', color: '#666' }" style="font-size: 13px">
             <el-table-column type="index" />
             <el-table-column prop="title" label="名称" show-tooltip-when-overflow />
-            <el-table-column prop="size" label="大小" width="120">
+            <!-- <el-table-column prop="size" label="大小" width="120">
               <template slot-scope="scope">{{ bytesToSize(scope.row.size) }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" width="150" align="center">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="openUpdateDocumentDialogVisible(scope.row)">修改</el-button>
@@ -83,8 +82,13 @@
       </el-collapse-item>
     </el-collapse>
     <!-- 新建章节 -->
-    <el-dialog title="新建章节" :visible.sync="addChapterDialogVisible" destroy-on-close width="30vw"
-      :close-on-click-modal="false">
+    <el-dialog
+      title="新建章节"
+      :visible.sync="addChapterDialogVisible"
+      destroy-on-close
+      width="30vw"
+      :close-on-click-modal="false"
+    >
       <el-form :model="addOrUpdateChapter" size="small" label-width="100px">
         <el-form-item label="章节名称：">
           <el-input v-model="addOrUpdateChapter.title" />
@@ -99,59 +103,76 @@
       </span>
     </el-dialog>
     <!-- 修改章节信息 -->
-    <el-dialog title="修改章节信息" :visible.sync="updateChapterDialogVisible" destroy-on-close width="30vw"
-      :close-on-click-modal="false">
+    <el-dialog
+      title="修改章节信息"
+      :visible.sync="updateChapterDialogVisible"
+      destroy-on-close
+      width="30vw"
+      :close-on-click-modal="false"
+    >
       <el-form :model="addOrUpdateChapter" size="small" label-width="100px">
         <el-form-item label="章节名称：">
           <el-input v-model="addOrUpdateChapter.title" />
         </el-form-item>
-        <el-form-item label="排　　序：">
+        <el-form-item label="排序：">
           <el-input-number v-model="addOrUpdateChapter.sort" style="width: 100%" />
         </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button type="primary" size="small" @click="updateChapter">确 认</el-button>
-        <el-button size="small" @click="updateChapterDialogVisible = false">取 消</el-button>
+        <el-button size="small" @click="updateChapterDialogVisible=false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 删除章节 -->
-    <el-dialog title="删除章节" :visible.sync="deleteChapterDialogVisible" destroy-on-close width="30vw">
+    <el-dialog
+      title="删除章节"
+      :visible.sync="deleteChapterDialogVisible"
+      destroy-on-close
+      width="30vw"
+    >
       <div style="color: red">该操作将会连带删除章节下的所有视频</div>
       <span slot="footer">
         <el-button type="primary" size="small" @click="deleteChapter">确 认</el-button>
-        <el-button size="small" @click="deleteChapterDialogVisible = false">取 消</el-button>
+        <el-button size="small" @click="deleteChapterDialogVisible=false">取 消</el-button>
       </span>
     </el-dialog>
     <!-- 上传视频 -->
-    <el-dialog :title.sync="uploadVideoDialogTitle" :visible.sync="uploadVideoDialogVisible" destroy-on-close
-      width="30vw" :close-on-click-modal="false" :before-close="uploadDialogBeforeClose">
+    <el-dialog
+      :title.sync="uploadVideoDialogTitle"
+      :visible.sync="uploadVideoDialogVisible"
+      destroy-on-close
+      width="30vw"
+      :close-on-click-modal="false"
+      :before-close="uploadDialogBeforeClose"
+    >
       <v-upload-video ref="UploadVideo" />
+    </el-dialog>
+    <!-- 修改视频信息 -->
+    <el-dialog
+      title="修改视频信息"
+      :visible.sync="updateVideoDialogVisible"
+      destroy-on-close
+      width="30vw"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="updateVideoData" size="small" label-width="100px">
+        <el-form-item label="视频名称：">
+          <el-input v-model="updateVideoData.title" />
+        </el-form-item>
+        <el-form-item label="排　　序：">
+          <el-input-number v-model="updateVideoData.sort" style="width: 100%" />
+        </el-form-item>
+        
+      </el-form>
+      <span slot="footer">
+        <el-button type="primary" size="small" @click="updateVideo">确 认</el-button>
+        <el-button size="small" @click="updateVideoDialogVisible=false">取 消</el-button>
+      </span>
     </el-dialog>
     <!-- 上传讲义 -->
     <el-dialog :title.sync="uploadDocumentDialogTitle" :visible.sync="uploadDocumentDialogVisible" destroy-on-close
       width="30vw" :close-on-click-modal="false" :before-close="uploadDocumentDialogBeforeClose">
       <v-upload-document ref="UploadDocument" />
-    </el-dialog>
-    <!-- 修改视频信息 -->
-    <el-dialog title="修改视频信息" :visible.sync="updateVideoDialogVisible" destroy-on-close width="30vw">
-      <el-form :model="updateVideoData" size="small" label-width="100px">
-        <el-form-item label="视频名称：">
-          <el-input v-model="updateVideoData.title" />
-        </el-form-item>
-        <el-form-item label="排序：">
-          <el-input-number v-model="updateVideoData.sort" style="width: 100%" />
-        </el-form-item>
-        <!-- <el-form-item label="免费观看：">
-          <el-radio-group v-model="updateVideoData.free">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item> -->
-      </el-form>
-      <span slot="footer">
-        <el-button type="primary" size="small" @click="updateVideo">确 认</el-button>
-        <el-button size="small" @click="updateVideoDialogVisible = false">取 消</el-button>
-      </span>
     </el-dialog>
     <!-- 修改讲义对话框 -->
     <el-dialog title="修改讲义信息" :visible.sync="updateDocumentDialogVisible" destroy-on-close width="30vw">
@@ -172,83 +193,29 @@
 </template>
 
 <script>
-// 章节相关接口
 import {
   list as listChapter,
   createIt as createChapter,
   updateIt as updateChapter,
   deleteIt as deleteChapter
-} from '@/api/chapter_tmp'
-// 视频相关接口
+} from '@/api/chapter'
 import {
   list as listVideo,
   updateIt as updateVideo,
   deleteIt as deleteVideo
 } from '@/api/video'
-//讲义相关接口
-// import {
-//   list as listDocument,
-//   updateIt as updateDocument,
-//   deleteIt as deleteDocument
-// } from '@/api/document_tmp'
-
-// 改为空实现或mock数据
-// 修改mock函数，移除对this的依赖
-const listDocument = (chapterId) => {
-  // 使用固定mock数据（不再依赖this.chapters）
-  const mockTemplates = [
-    {
-      title: '软件工程课程讲义.pdf',
-      size: 1024 * 2450,
-      type: 'pdf'
-    },
-    {
-      title: '教学PPT.pptx',
-      size: 1024 * 5870,
-      type: 'pptx'
-    }
-  ]
-
-  const documents = mockTemplates.map((item, index) => ({
-    id: `doc_${chapterId}_${index}`,
-    title: item.title,
-    size: item.size,
-    chapterId: chapterId,
-    sort: index + 1,
-    url: `/documents/${chapterId}_${index}.${item.type}`
-  }))
-
-  return Promise.resolve({
-    data: documents,
-    message: 'success'
-  })
-}
-
-const updateDocument = (data) => {
-  console.log('模拟更新讲义:', data)
-  return Promise.resolve({
-    message: '讲义更新成功',
-    data: {
-      ...data,
-      updatedAt: new Date().toISOString()
-    }
-  })
-}
-
-const deleteDocument = (id) => {
-  console.log('模拟删除讲义:', id)
-  return Promise.resolve({
-    message: `讲义[ID:${id}]删除成功`,
-    code: 200
-  })
-}
+import {
+  list as listDocument,
+  updateIt as updateDocument,
+  deleteIt as deleteDocument
+} from '@/api/document'
 import { bytesToSize } from '@/utils'
 
 export default {
   name: 'CreateSubjectAndUpload',
   components: {
-    'v-upload-video': () => import('@/views/course_update/upload'),
-    'v-upload-document': () => import('@/views/course_update/upload_document')
+    'v-upload-video': () => import('@/views/course_add/upload'),
+    'v-upload-document': () => import('@/views/course_add/upload_document')
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ['course'],
@@ -258,13 +225,11 @@ export default {
       // 章节id与视频列表映射<chapterId,[...videos]>
       chapterIdVideoMap: {},
       addOrUpdateChapter: { title: '', sort: 0 },
-      updateVideoData: { title: '', sort: 0, free: true },
+      updateVideoData: { title: '', sort: 0, free: false },
       // 章节id与讲义列表映射
       chapterIdDocumentMap: {},
       addOrUpdateChapter: { title: '', sort: 0 },
       updateVideoData: { title: '', sort: 0, free: true },
-      //修改讲义数据
-      updateDocumentData: { title: '', sort: 0 },
       // 对话框
       addChapterDialogVisible: false,
       updateChapterDialogVisible: false,
@@ -275,12 +240,13 @@ export default {
       uploadVideoDialogTitle: '',
       // 更新视频
       updateVideoDialogVisible: false,
+      //修改讲义数据
+      updateDocumentData: { title: '', sort: 0 },
       // 上传讲义
       uploadDocumentDialogVisible: false,
       uploadDocumentDialogTitle: '',
       // 更新讲义
       updateDocumentDialogVisible: false
-
     }
   },
   created() {
@@ -293,19 +259,12 @@ export default {
     },
     getChapterList() {
       listChapter(this.course.id).then(resp => {
-        this.chapters = resp.data || []
-        // 使用Vue.set确保响应式,保证列表展示
-        this.chapters.forEach(c => {
-          this.$set(this.chapterIdVideoMap, c.id, [])
-          this.$set(this.chapterIdDocumentMap, c.id, [])
-        })
-        // 默认加载第一个章节的数据
-        if (this.chapters.length > 0) {
-          this.change(this.chapters[0].id)
+        this.chapters = []
+        this.chapters = resp.data
+        // 初始化视频列表空数据
+        for (const c of resp.data) {
+          this.chapterIdVideoMap[c.id] = []
         }
-      }).catch(error => {
-        console.error('获取章节失败:', error)
-        this.$message.error('获取章节数据失败')
       })
     },
     openAddChapterDialog() {
@@ -317,31 +276,16 @@ export default {
       this.updateChapterDialogVisible = true
     },
     openDeleteChapterDialog(curData) {
-      this.addOrUpdateChapter = { ...curData }
+      this.addOrUpdateChapter = curData
       this.deleteChapterDialogVisible = true
     },
-    // 上传视频
     openUploadVideoDialog(curData) {
       this.uploadVideoDialogTitle = `上传视频至章节[${curData.title}]`
       this.uploadVideoDialogVisible = true
       const data = { courseId: this.course.id, chapterId: curData.id }
-      setTimeout(function () {
+      setTimeout(function() {
         this.$refs.UploadVideo.setData(data)
       }.bind(this), 100)
-    },
-    // 上传讲义
-    openUploadDocumentDialog(curData) {
-      this.uploadDocumentDialogTitle = `上传讲义至章节[${curData.title}]`
-      this.uploadDocumentDialogVisible = true
-      const data = { courseId: this.course.id, chapterId: curData.id }
-      setTimeout(() => {
-        this.$refs.UploadDocument.setData(data)
-      }, 100)
-    },
-    // 上传讲义对话框关闭时更新信息
-    uploadDocumentDialogBeforeClose(done) {
-      this.change(this.$refs.UploadDocument.data.chapterId)
-      done()
     },
     openUpdateVideoDialogVisible(curData) {
       this.updateVideoDialogVisible = true
@@ -373,14 +317,13 @@ export default {
         this.deleteChapterDialogVisible = false
       })
     },
-    // 章节切换时加载视频和讲义数据
+    // 章节切换
     change(id) {
+      // 获取章节视频信息
       if (id) {
-        // 获取章节视频信息
         listVideo(id).then(resp => {
           this.chapterIdVideoMap[id] = resp.data
         })
-        // 获取章节讲义信息
         listDocument(id).then(resp => {
           this.chapterIdDocumentMap[id] = resp.data
         })
@@ -406,6 +349,20 @@ export default {
         this.change(this.updateVideoData.chapterId)
         this.updateVideoDialogVisible = false
       })
+    },
+     // 上传讲义
+     openUploadDocumentDialog(curData) {
+      this.uploadDocumentDialogTitle = `上传讲义至章节[${curData.title}]`
+      this.uploadDocumentDialogVisible = true
+      const data = { courseId: this.course.id, chapterId: curData.id }
+      setTimeout(() => {
+        this.$refs.UploadDocument.setData(data)
+      }, 100)
+    },
+    // 上传讲义对话框关闭时更新信息
+    uploadDocumentDialogBeforeClose(done) {
+      this.change(this.$refs.UploadDocument.data.chapterId)
+      done()
     },
     // 打开修改讲义对话框
     openUpdateDocumentDialogVisible(curData) {

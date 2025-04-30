@@ -3,7 +3,7 @@
       <el-upload
         ref="upload"
         drag
-        :action="uploadNoteUrl"
+        :action="uploaddocumentUrl"
         multiple
         :before-upload="beforeUpload"
         :headers="headers"
@@ -22,7 +22,7 @@
   
   <script>
   //后期更改
-  import { uploadNoteUrl } from '@/api/video_tmp'
+  import { uploaddocumentUrl } from '@/api/document'
   import store from '@/store'
   
   export default {
@@ -33,7 +33,7 @@
           courseId: null,
           chapterId: null
         },
-        uploadNoteUrl: uploadNoteUrl,
+        uploaddocumentUrl: uploaddocumentUrl,
         headers: { 'X-Token': store.getters.token || '' }
       }
     },
