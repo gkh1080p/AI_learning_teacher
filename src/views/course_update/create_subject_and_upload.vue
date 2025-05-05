@@ -178,19 +178,19 @@ import {
   createIt as createChapter,
   updateIt as updateChapter,
   deleteIt as deleteChapter
-} from '@/api/chapter_tmp'
+} from '@/api/chapter'
 // 视频相关接口
 import {
   list as listVideo,
   updateIt as updateVideo,
   deleteIt as deleteVideo
-} from '@/api/video_tmp'
+} from '@/api/video'
 //讲义相关接口
 import {
   list as listDocument,
   updateIt as updateDocument,
   deleteIt as deleteDocument
-} from '@/api/document_tmp'
+} from '@/api/document'
 
 // 改为空实现或mock数据
 // 修改mock函数，移除对this的依赖
