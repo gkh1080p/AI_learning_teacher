@@ -81,27 +81,27 @@
               <!-- 判断是否上架 -->
             <el-popconfirm v-if="scope.row.enable" style="margin:0 0 0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
             icon="el-icon-bottom" icon-color="red" :title="`你要下架课程[${scope.row.title}]吗？`"
-              @confirm="deleteUser(scope.row)">
-              <el-button slot="reference" type="danger" size="mini" icon="el-icon-bottom" >下架</el-button>
+              @confirm="disableUser(scope.row)">
+              <el-button slot="reference" type="warning" size="mini" icon="el-icon-bottom" >下架</el-button>
             </el-popconfirm>
             <el-popconfirm v-if="!scope.row.enable" style="margin:0 0 0 10px" placement="top-end" confirm-button-text="确定" cancel-button-text="取消"
             icon="el-icon-top" icon-color="red" :title="`你要上架课程[${scope.row.title}]吗？`"
               @confirm="enableUser(scope.row)">
               <el-button slot="reference" type="success" size="mini" icon="el-icon-top" >上架</el-button>
             </el-popconfirm>
-            <!-- <el-popconfirm style="margin-left: 10px" placement="top-end" confirm-button-text="确定"
+            <el-popconfirm style="margin-left: 10px" placement="top-end" confirm-button-text="确定"
               cancel-button-text="取消" icon="el-icon-info" icon-color="red" :title="`你要永久删除[${scope.row.title}]吗？`"
               @confirm="deleteUser(scope.row)">
               <el-button slot="reference" type="danger" size="mini" icon="el-icon-delete" style="margin-right: 10px;">
                 删除
               </el-button>
-            </el-popconfirm> -->
+            </el-popconfirm>
             <!-- 课程评阅 -->
             <!-- <router-link v-if="!(scope.row.status === 'TURN_DOWN')" :to="{ name: 'reviewList', params: { id: scope.row.id } }" style="margin:0 0 0 10px">
               <el-button type="warning" size="mini" icon="el-icon-chat-dot-round">评阅</el-button>
             </router-link> -->
 
-            <el-popover v-if="scope.row.status === 'TURN_DOWN'" style="margin: 0 0 0 10px;" title="审核驳回原因" placement="left" width="360"
+            <el-popover v-if="scope.row.status === 'TURN_DOWN'" title="审核驳回原因" placement="left" width="360"
               trigger="click">
               <span style="color: #F44336;line-height: 24px">{{ scope.row.remarks }}</span>
               <el-button slot="reference" type="info" size="mini" icon="el-icon-warning-outline">备注</el-button>
@@ -120,7 +120,7 @@
 
 <script>
 
-import { list, deleteIt,enable } from '@/api/course'
+import { list, deleteIt,enable,disable } from '@/api/course'
 
 import { getSubject } from '@/api/subject'
 import { encodeOssFileUri } from '@/utils'
@@ -189,10 +189,18 @@ export default {
         this.tableDataLoading = false
       })
     },
-    // 下架课程
+    // 删除课程
     deleteUser(curData) {
       this.currentOperationData = curData
       deleteIt(curData.id).then(resp => {
+        this.$message.success(resp.message)
+        this.getList()
+      })
+    },
+    // 下架课程
+    disableUser(curData) {
+      this.currentOperationData = curData
+      disable(curData.id).then(resp => {
         this.$message.success(resp.message)
         this.getList()
       })

@@ -64,9 +64,7 @@
             :header-cell-style="{ fontWeight: 'normal', color: '#666' }" style="font-size: 13px">
             <el-table-column type="index" />
             <el-table-column prop="title" label="名称" show-tooltip-when-overflow />
-            <!-- <el-table-column prop="size" label="大小" width="120">
-              <template slot-scope="scope">{{ bytesToSize(scope.row.size) }}</template>
-            </el-table-column> -->
+            
             <el-table-column label="操作" width="150" align="center">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" @click="openUpdateDocumentDialogVisible(scope.row)">修改</el-button>

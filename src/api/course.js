@@ -67,6 +67,13 @@ export function enable(id) {
     method: 'post'
   })
 }
+//下架
+export function disable(id) {
+  return request({
+    url: `${api_prefix}/disable/${id}`,
+    method: 'post'
+  })
+}
 
 // 上传图片
 export function uploadPic(data) {
