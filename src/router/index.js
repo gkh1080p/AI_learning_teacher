@@ -118,7 +118,29 @@ export const constantRoutes = [
       component: () => import('@/views/course_review/courseReview.vue'),
       meta: { title: '课程评阅', icon: 'el-icon-chat-dot-round' }
     }],
-    hidden: true  
+    hidden: true
+  },
+  {
+    path: '/exercise',
+    component: Layout,
+    children: [{
+      path: 'list',
+      name: 'exerciseList',
+      component: () => import('@/views/course_exercise/exercise_list.vue'),
+      meta: { title: '习题管理', icon: 'el-icon-edit-outline' }
+    },
+    ],
+  },
+  {
+    path: '/exercise/view/:id',
+    component: Layout,
+    children: [{
+      path: 'list',
+      name: 'exerciseView',
+      component: () => import('@/views/course_exercise/exerciseView.vue'),
+      meta: { title: '查看习题' }
+    }],
+    hidden: true
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
