@@ -88,7 +88,7 @@ import { list } from '@/api/course'
 import UploadExcelDialog from '@/views/course_exercise/exerciseUpload'
 import { getSubject } from '@/api/subject'
 import { encodeOssFileUri } from '@/utils'
-
+import {uploadQuestion} from '@/api/exercise'
 export default {
     name: 'EduCourseist',
     components: {
@@ -164,7 +164,13 @@ export default {
             this.uploadDialogVisible = true
         },
         submitUpload(formData) {
-
+            console.log('formData', formData)
+            uploadQuestion(formData).then(() => {
+                this.$message.success('上传成功')
+                this.getList()
+            }).catch(() => {
+                this.$message.error('上传失败')
+            })
             // uploadExcelApi(formData).then(() => {
             //     this.$message.success('上传成功')
             //     this.getList()

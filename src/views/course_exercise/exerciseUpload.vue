@@ -21,6 +21,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'UploadExcelDialog',
     props: {
@@ -65,7 +66,7 @@ export default {
 
             const formData = new FormData()
             formData.append('file', this.fileList[0].raw)
-            formData.append('courseId', this.courseId)
+            formData.append('course_id', this.courseId)
             console.log('formData', formData)
             this.$emit('upload', formData)
             this.handleClose()

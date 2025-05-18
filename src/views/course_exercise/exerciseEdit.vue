@@ -2,34 +2,34 @@
     <el-dialog title="编辑题目信息" :visible.sync="visible" width="600px" @close="handleClose">
         <el-form :model="form" label-width="100px">
             <el-form-item label="题目内容">
-                <el-input type="textarea" v-model="form.question" />
+                <el-input type="textarea" v-model="form.title" />
             </el-form-item>
 
             <el-form-item label="选项 A">
-                <el-input v-model="form.optionA" />
+                <el-input v-model="form.aoption" />
             </el-form-item>
 
             <el-form-item label="选项 B">
-                <el-input v-model="form.optionB" />
+                <el-input v-model="form.boption" />
             </el-form-item>
 
             <el-form-item label="选项 C">
-                <el-input v-model="form.optionC" />
+                <el-input v-model="form.coption" />
             </el-form-item>
 
             <el-form-item label="选项 D">
-                <el-input v-model="form.optionD" />
+                <el-input v-model="form.doption" />
             </el-form-item>
 
             <el-form-item label="是否多选">
-                <el-radio-group v-model="form.isMultiple">
-                    <el-radio :label="false">否</el-radio>
-                    <el-radio :label="true">是</el-radio>
+                <el-radio-group v-model="form.type">
+                    <el-radio :label="'single'">否</el-radio>
+                    <el-radio :label="'multiple'">是</el-radio>
                 </el-radio-group>
             </el-form-item>
 
             <el-form-item label="正确答案">
-                <el-checkbox-group v-if="form.isMultiple" v-model="form.correctAnswer">
+                <el-checkbox-group v-if="form.type == 'multiple'" v-model="form.correctAnswer">
                     <el-checkbox label="A" />
                     <el-checkbox label="B" />
                     <el-checkbox label="C" />
@@ -51,6 +51,9 @@
                     <el-option label="困难" value="hard" />
                 </el-select>
             </el-form-item>
+            <el-form-item label="分值">
+                <el-input v-model="form.score" />
+            </el-form-item>
         </el-form>
 
         <template #footer>
@@ -61,23 +64,28 @@
 </template>
 
 <script>
+import {updateQuestion,getQuestionDetail} from '@/api/exercise' 
 export default {
     name: 'EditQuestionDialog',
     props: {
         visible: Boolean,
-        questionId: [String, Number]
+        questionId: [String, Number],
+        course_id: [String, Number]
     },
     data() {
         return {
             form: {
-                question: '',
-                optionA: '',
-                optionB: '',
-                optionC: '',
-                optionD: '',
-                isMultiple: false,
-                correctAnswer: [],
-                difficulty: ''
+                title: '',
+                aOption: '',
+                bOption: '',
+                cOption: '',
+                dOption: '',
+                type: null,
+                correctAnswer: null,
+                difficulty: null,
+                score: null,
+                courseId: this.course_id,
+                id: this.questionId
             }
         }
     },
@@ -86,38 +94,32 @@ export default {
             if (val && this.questionId) {
                 this.fetchQuestionDetail()
             }
+        },
+        'form.type'(newVal) {
+            if (newVal === 'multiple') {
+                // 切换为多选时，确保 correctAnswer 是数组
+                if (!Array.isArray(this.form.correctAnswer)) {
+                    this.form.correctAnswer = this.form.correctAnswer
+                        ? [this.form.correctAnswer]
+                        : [];
+                }
+            } else {
+                // 切换为单选时，只保留第一个答案
+                if (Array.isArray(this.form.correctAnswer)) {
+                    this.form.correctAnswer = this.form.correctAnswer[0] || null;
+                }
+            }
         }
     },
     methods: {
         fetchQuestionDetail() {
-            // 模拟请求
-            // 实际使用时请替换为你的 axios 请求
-            // this.$axios.get(`/api/question/${this.questionId}`).then(res => {
-            //   const data = res.data
-            const data = {
-                question: '以下哪个是 JavaScript 框架？',
-                optionA: 'Vue',
-                optionB: 'HTML',
-                optionC: 'CSS',
-                optionD: 'Photoshop',
-                isMultiple: false,
-                correctAnswer: [],
-                difficulty: '中等'
-            }
-
-            this.form = {
-                question: data.question,
-                optionA: data.optionA,
-                optionB: data.optionB,
-                optionC: data.optionC,
-                optionD: data.optionD,
-                isMultiple: data.isMultiple,
-                correctAnswer: data.isMultiple ? [...data.correctAnswer] : [data.correctAnswer[0]],
-                difficulty: data.difficulty
-            }
-            // }).catch(err => {
-            //   this.$message.error('获取题目详情失败')
-            // })
+            
+            getQuestionDetail(this.questionId).then(resp => {
+                this.form = resp.data
+                this.form.correctAnswer = this.form.type === 'multiple'
+                    ? this.form.correctAnswer.split(',')
+                    : this.form.correctAnswer
+            })
         },
         handleClose() {
             this.$emit('update:visible', false)
@@ -125,9 +127,11 @@ export default {
         handleSubmit() {
             const payload = {
                 ...this.form,
-                correctAnswer: this.form.isMultiple
-                    ? this.form.correctAnswer.filter(ans => ans !== undefined)
-                    : [this.form.correctAnswer]
+                correctAnswer: this.form.type === 'multiple'
+                    ? this.form.correctAnswer.filter(ans => ans !== undefined).join(',')
+                    : this.form.correctAnswer,
+                courseId: this.form.courseId,
+                id: this.questionId
             }
             console.log('提交的数据:', payload)
             this.$emit('submit', payload)
