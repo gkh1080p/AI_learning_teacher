@@ -71,7 +71,8 @@
 import { mapGetters } from 'vuex'
 import { getNotReadMessageCount } from '@/api/message'
 import { getStat } from '@/api/stat'
-
+// 获取教师的课程
+import { list,listAll } from '@/api/course'
 export default {
   name: 'Dashboard',
   components: {},
@@ -84,6 +85,11 @@ export default {
         joinDateTime: '',
         joinDaysCount: 0,
         videoCount: 0
+      },
+      // 课程详细
+      matlist:{
+        courseList: [],
+        total: 0
       }
     }
   },
@@ -118,6 +124,7 @@ export default {
   created() {
     this.getMessageCount()
     this.getStat()
+    this.getCourseList()
   },
   methods: {
     // 获取消息数量
@@ -130,7 +137,15 @@ export default {
       getStat().then(resp => {
         this.stat = resp.data
       })
-    }
+    },
+    getCourseList() {
+      listAll().then(resp => {
+        console.log(resp)
+        this.matlist.courseList = resp.data
+        this.matlist.total = resp.total
+        console.log(this.matlist.courseList)
+      })
+    },
   }
 }
 </script>
