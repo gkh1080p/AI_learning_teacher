@@ -79,7 +79,7 @@
 
 <script>
 
-import { getInfo, updateIt, updateCV } from '@/api/course'
+import { getInfo, updateIt } from '@/api/course'
 
 export default {
   name: 'EducourseUpdate',
@@ -132,12 +132,10 @@ export default {
     updateCV() {
       this.loading = true
       this.updateCourseData = this.$refs.CreateInfo.getData()
-      updateCV(this.courseData.id).then(resp => {
-        this.updateCVDialogVisible = false
+      this.updateCVDialogVisible = false
         this.$message.success('数据准备完成')
         this.stepActive = 2
         this.loading = false
-      })
     }
   }
 }

@@ -22,7 +22,7 @@
 
 <script>
 
-import { uploadVideoUrl } from '@/api/video_tmp'
+import { uploadVideoUrl } from '@/api/video'
 import store from '@/store'
 
 export default {

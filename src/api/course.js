@@ -95,11 +95,3 @@ export function updateIt(data) {
   })
 }
 
-// 修改章节与视频信息
-export function updateCV(courseId) {
-  return request({
-    url: `${api_prefix}/update/${courseId}`,
-    method: 'post'
-  })
-}
-

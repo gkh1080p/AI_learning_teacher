@@ -22,7 +22,7 @@
   
   <script>
   //后期更改
-  import { uploaddocumentUrl } from '@/api/document_tmp'
+  import { uploaddocumentUrl } from '@/api/document'
   import store from '@/store'
   
   export default {
