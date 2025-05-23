@@ -32,6 +32,14 @@ export function updateQuestion(data) {
     })
 }
 
+//新增习题
+export function addQuestion(data) {
+    return request({
+        url: `${api_prefix}/create`,
+        method: 'post',
+        data
+    })
+}
 // 删除习题
 export function deleteQuestion(id) {
     return request({

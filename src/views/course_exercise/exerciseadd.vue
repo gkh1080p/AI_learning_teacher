@@ -64,28 +64,26 @@
 </template>
 
 <script>
-import {getQuestionDetail} from '@/api/exercise' 
+import {updateQuestion,getQuestionDetail} from '@/api/exercise' 
 export default {
     name: 'EditQuestionDialog',
     props: {
         visible: Boolean,
-        questionId: [String, Number],
         course_id: [String, Number]
     },
     data() {
         return {
             form: {
                 title: '',
-                aOption: '',
-                bOption: '',
-                cOption: '',
-                dOption: '',
+                aoption: '',
+                boption: '',
+                coption: '',
+                doption: '',
                 type: null,
                 correctAnswer: null,
                 difficulty: null,
                 score: null,
-                courseId: this.course_id,
-                id: this.questionId
+                courseId: this.course_id
             }
         }
     },
@@ -113,13 +111,7 @@ export default {
     },
     methods: {
         fetchQuestionDetail() {
-            
-            getQuestionDetail(this.questionId).then(resp => {
-                this.form = resp.data
-                this.form.correctAnswer = this.form.type === 'multiple'
-                    ? this.form.correctAnswer.split(',')
-                    : this.form.correctAnswer
-            })
+            form= null
         },
         handleClose() {
             this.$emit('update:visible', false)
@@ -130,8 +122,7 @@ export default {
                 correctAnswer: this.form.type === 'multiple'
                     ? this.form.correctAnswer.filter(ans => ans !== undefined).join(',')
                     : this.form.correctAnswer,
-                courseId: this.form.courseId,
-                id: this.questionId
+                courseId: this.form.courseId
             }
             console.log('提交的数据:', payload)
             this.$emit('submit', payload)

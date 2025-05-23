@@ -28,6 +28,7 @@
                 <el-button @click="resetFilter">重置</el-button>
             </el-form-item>
         </el-form>
+        <el-button slot="reference"  type="success" style="margin: 10px 0; width: 100px;" @click="handleAdd()">新增</el-button>
         <!-- 表格 -->
         <el-table :data="tableData" border stripe highlight-current-row style="width: 100%">
             <el-table-column type="index" label="序号" width="60" align="center" />
@@ -66,18 +67,21 @@
 
         <EditQuestionDialog :visible.sync="editVisible" :questionId="currentQuestionId"
             :course_id="searchParams.courseId" @submit="handleUpdateSubmit" />
+        <AddQuestionDialog :visible.sync="addVisible" :course_id="searchParams.courseId" @submit="handleAddSubmit" />
     </div>
 
 </template>
 
 <script>
 
-import { getQuestionList, updateQuestion, deleteQuestion } from '@/api/exercise'
+import { getQuestionList, updateQuestion, deleteQuestion,addQuestion } from '@/api/exercise'
 import EditQuestionDialog from '@/views/course_exercise/exerciseEdit'
+import AddQuestionDialog from '@/views/course_exercise/exerciseadd'
 export default {
     name: 'ExerciseTable',
     components: {
-        EditQuestionDialog
+        EditQuestionDialog,
+        AddQuestionDialog
     },
     data() {
         return {
@@ -88,6 +92,8 @@ export default {
             },
             // 修改弹窗
             editVisible: false,
+            //新增弹窗
+            addVisible: false,
             // 修改传入id
             currentQuestionId: null,
             // 查询参数
@@ -152,6 +158,21 @@ export default {
             // 编辑逻辑
             this.currentQuestionId = row.id
             this.editVisible = true
+        },
+        handleAdd() {
+            // 新增逻辑
+            this.addVisible = true
+        },
+        handleAddSubmit(newData) {
+            // 提交新增数据给后端
+            console.log('新增数据', newData)
+            addQuestion(newData).then(() => {
+                this.$message.success('新增成功')
+                this.addVisible = false
+                this.fetchData() // 刷新数据
+            }).catch(() => {
+                this.$message.error('新增失败')
+            })
         },
         handleUpdateSubmit(updatedData) {
             // 提交表单数据给后端
